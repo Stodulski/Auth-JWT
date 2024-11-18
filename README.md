@@ -2,7 +2,7 @@
 
 ## 🚀 Endpoints
 
-### SignUp
+### Sign Up
 
 **URL**: `/signup`  
 **Method**: `POST`  
@@ -16,7 +16,7 @@
 }
 ```
 
-### SignIn
+### Sign In
 **URL**: `/signin`  
 **Method**: `POST`  
 **Body**: 
