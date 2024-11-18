@@ -9,7 +9,7 @@ const validateSignUp = async (userEntry: UserEntry): Promise<string | null> => {
     return 'Username not available'
   }
   if (
-    (await userDataAvailable(userEntry.email.toLowerCase(), 'email')) &&
+    (await userDataAvailable(userEntry.email.toLowerCase(), 'email')) ||
     !isValidEmail(userEntry.email.toLowerCase())
   ) {
     return 'Email not available or incorrect'
