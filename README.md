@@ -3,9 +3,11 @@
 ## 🚀 Endpoints
 
 ### SignUp
+
 **URL**: `/signup`
 **Method**: `POST`
-**Body**: ```{
+**Body**: ```json
+{
   username: "username",
   email: "email@email.com",
   password: "password",
@@ -15,7 +17,8 @@
 ### SignIn
 **URL**: `/signin`
 **Method**: `POST`
-**Body**: ```{
+**Body**: ```json
+{
   "username": "username",
   "password": "password"
 }```
