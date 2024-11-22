@@ -8,13 +8,13 @@ const validateSignUp = async (userEntry: UserEntry): Promise<string | null> => {
   if (await userDataAvailable(userEntry.username.toLowerCase(), 'username')) {
     return 'Username not available'
   }
-  if (
-    (await userDataAvailable(userEntry.email.toLowerCase(), 'email')) ||
-    !isValidEmail(userEntry.email.toLowerCase())
-  ) {
-    return 'Email not available or incorrect'
+  if (await userDataAvailable(userEntry.email.toLowerCase(), 'email')) {
+    return 'Email not available'
   }
-  if (userEntry.password !== userEntry.rePassword) {
+  if (!isValidEmail(userEntry.email.toLowerCase())) {
+    return 'Email not valid'
+  }
+  if (userEntry.password.toLowerCase() !== userEntry.rePassword.toLowerCase()) {
     return 'Passwords do not match'
   }
   return null

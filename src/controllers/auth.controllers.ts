@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
 import { TokenPayload } from '../types'
+import { findUserById } from '../models/user'
 
 export const signToken = async (
   username: string,
@@ -34,14 +35,17 @@ export const verifyToken = async (
     res.status(401).json({ status: 'Error', message: 'Malformed token' })
     return
   }
-
+  const secret = process.env.SECRET
+  if (secret === undefined) {
+    res.status(500).json({ status: 'Error', message: 'An error has ocurred' })
+    return
+  }
   try {
-    const secret = process.env.SECRET
-    if (secret === undefined) {
+    const decoded = jwt.verify(token, secret) as TokenPayload
+    if ((await findUserById(decoded.id)) === null) {
       res.status(500).json({ status: 'Error', message: 'An error has ocurred' })
       return
     }
-    const decoded = jwt.verify(token, secret) as TokenPayload
     req.user = decoded
     next()
   } catch (error) {

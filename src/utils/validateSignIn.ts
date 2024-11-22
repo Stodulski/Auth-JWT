@@ -1,14 +1,14 @@
 import { User, UserMongoDB } from '../types'
-import { comparePassword } from './cryptPasswords'
-import { findUser } from '../models/user'
+import { comparePassword } from './bcrypt'
+import { findUserByUsername } from '../models/user'
 
 const validateSignIn = async (
   userEntry: User
 ): Promise<string | UserMongoDB> => {
-  const user = await findUser(userEntry.username)
+  const user = await findUserByUsername(userEntry.username.toLowerCase())
   if (user === null) return 'Username not exist'
   const passwordsMatch = await comparePassword(
-    userEntry.password,
+    userEntry.password.toLowerCase(),
     user.password
   )
   if (!passwordsMatch) return 'Passwords dont match'
