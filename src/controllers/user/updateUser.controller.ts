@@ -1,12 +1,12 @@
 import { Request, Response } from 'express'
-import { UserDataUpdate } from '../../types'
+import { User } from '../../types'
 import { updateUserById } from '../../models/user'
 import { signToken } from '../auth.controllers'
 import isValidEmail from '../../utils/isValidEmail'
 
 const updateUser = async (req: Request, res: Response): Promise<void> => {
   try {
-    const userEntry: UserDataUpdate = req.body
+    const userEntry: User = req.body
     const userId = req.params.userId
     if (userId !== req.user?.id) {
       res.status(403).json({ status: 'Error', message: 'Unauthorized' })

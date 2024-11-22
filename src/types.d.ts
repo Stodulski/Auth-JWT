@@ -24,5 +24,3 @@ export interface UserEntry extends User {
 }
 
 export interface UserMongoDB extends User, Document {}
-
-export interface UserDataUpdate extends Omit<User, 'password'> {}

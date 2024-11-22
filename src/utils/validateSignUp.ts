@@ -14,6 +14,9 @@ const validateSignUp = async (userEntry: UserEntry): Promise<string | null> => {
   if (!isValidEmail(userEntry.email.toLowerCase())) {
     return 'Email not valid'
   }
+  if (userEntry.password.length < 8) {
+    return 'Password to short'
+  }
   if (userEntry.password.toLowerCase() !== userEntry.rePassword.toLowerCase()) {
     return 'Passwords do not match'
   }

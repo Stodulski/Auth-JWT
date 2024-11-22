@@ -1,6 +1,8 @@
 import UserModel from '../schema/user'
-import { User, UserMongoDB, UserDataUpdate } from '../types'
+import { User, UserMongoDB } from '../types'
 import { MongoServerError } from 'mongodb'
+import { encryptPassword } from '../utils/bcrypt'
+import { Error } from 'mongoose'
 
 export const createUser = async (
   userData: User
@@ -56,18 +58,30 @@ export const findUserById = async (id: string): Promise<null | UserMongoDB> => {
 
 export const updateUserById = async (
   id: string,
-  userEntry: UserDataUpdate
+  userEntry: User
 ): Promise<string | UserMongoDB> => {
   try {
     const user = await UserModel.findById(id).select('-password')
-    if (user === null) throw new Error()
-    if (user.email !== userEntry.email) user.email = userEntry.email
-    if (user.username !== userEntry.username) user.username = userEntry.username
+    if (user === null) return 'An error has ocurred'
+    if (user.email !== userEntry.email.toLowerCase()) {
+      user.email = userEntry.email.toLowerCase()
+    }
+    if (user.username !== userEntry.username.toLowerCase()) {
+      user.username = userEntry.username.toLowerCase()
+    }
+    if (userEntry.password.length > 0) {
+      const encryptedPassword = await encryptPassword(
+        userEntry.password.toLowerCase()
+      )
+      user.password = encryptedPassword
+    }
     const savedUser = await user.save()
     return savedUser
   } catch (error) {
     if (error instanceof MongoServerError && error.code === 11000) {
       return 'Username or Email not valid'
+    } else if (error instanceof Error.ValidationError) {
+      return 'Password to short'
     } else {
       return 'An error has ocurred'
     }

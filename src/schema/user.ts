@@ -4,7 +4,11 @@ import { UserMongoDB } from '../types'
 const userSchema = new Schema<UserMongoDB>({
   username: { type: String, unique: true, required: true },
   email: { type: String, unique: true, required: true },
-  password: { type: String, required: true }
+  password: {
+    type: String,
+    required: true,
+    minlength: 8
+  }
 })
 
 const UserModel = model<UserMongoDB>('User', userSchema)
