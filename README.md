@@ -1,4 +1,4 @@
-# 🔒 Local authentication with JsonWebToken
+# 🔒 CRUD with Local authentication - Json Web Token
 
 ## 🚀 Endpoints
 
